@@ -1,0 +1,30 @@
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+
+# Inicjalizacja przeglądarki
+options = Options()
+options.add_argument("--start-maximized")
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=options)
+
+# 1. Otwórz stronę
+driver.get("https://practicetestautomation.com/practice-test-login/")
+
+# 2. Wprowadzenie danych do formularza
+driver.find_element(By.ID, "username").send_keys("student")
+driver.find_element(By.ID, "password").send_keys("Password123")
+
+# 3. Kliknięcie na przycisk submit
+driver.find_element(By.ID, "submit").click()
+
+# 4. Weryfikacja tekstu "Logged In Successfully"
+assert "Logged In Successfully" in driver.page_source
+
+# 5. Weryfikacja URL
+assert driver.current_url == "https://practicetestautomation.com/logged-in-successfully/"
+
+# 6. Weryfikacja istnienia przycisku "Log out"
+logout_button = driver.find_element(By.XPATH, "//button[text()='Log out']")
+assert logout_button is not None
+
+# Zakończenie sesji
+driver.quit()
